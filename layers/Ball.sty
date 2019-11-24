@@ -16,9 +16,13 @@
 \coordinate (\name-west)   at (-\r, 0  , 0) ;
 \coordinate (\name-north)  at ( 0 , \r , 0) ;
 \coordinate (\name-south)  at ( 0 , -\r, 0) ;
+\coordinate (\name-northeast) at (\name-north-|\name-east);
+\coordinate (\name-northwest) at (\name-north-|\name-west);
+\coordinate (\name-southeast) at (\name-south-|\name-east);
+\coordinate (\name-southwest) at (\name-south-|\name-west);
 
 \path (\name-south) + (0,-20pt) coordinate (caption-node) 
-edge ["\textcolor{black}{\bf \caption}"'] (caption-node); %Ball caption
+edge ["\textcolor{black}{\bf \huge \caption}"'] (caption-node); %Ball caption
 
 },
 /sphere/.search also={/tikz},
