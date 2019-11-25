@@ -58,7 +58,7 @@ def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", widt
 """
 
 # Conv
-def to_SepConv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
+def to_SepConv( name, s_filer="", n_filer="", offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
     return r"""
 \pic[shift={"""+ offset +"""}] at """+ to +""" 
     {RightBandedBox={
@@ -166,7 +166,7 @@ def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32
 
 
 
-def to_ConvRes( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=6, height=40, depth=40, opacity=0.2, caption=" " ):
+def to_ConvRes( name, s_filer="", n_filer="", offset="(0,0,0)", to="(0,0,0)", width=6, height=40, depth=40, opacity=0.2, caption=" " ):
     return r"""
 \pic[shift={ """+ offset +""" }] at """+ to +""" 
     {RightBandedBox={
@@ -176,6 +176,7 @@ def to_ConvRes( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", w
         zlabel="""+ str(s_filer) +r""",
         fill={rgb:white,1;black,3},
         bandfill={rgb:white,1;black,3},
+        bandfraction=3,
         opacity="""+ str(opacity) +""",
         bandopacity="""+ str(opacity) +""",
         height="""+ str(height) +""",
@@ -187,7 +188,7 @@ def to_ConvRes( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", w
 
 
 # ConvSoftMax
-def to_ConvSoftMax( name, s_filer=40, n_filer="", offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
+def to_ConvSoftMax( name, s_filer=40, n_filer="", offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, fontsize="\Large", caption=" " ):
     return r"""
 \pic[shift={"""+ offset +"""}] at """+ to +""" 
     {Box={
@@ -227,9 +228,9 @@ def to_connection_dashed( of, to):
 \draw [dashed-connection]  ("""+of+"""-east)    -- node {\midarrow} ("""+to+"""-west);
 """
 
-def to_connection_straight( of, to, arrow='', style='-|'):
+def to_connection_straight( of, to, caption='', connection='connection', arrow_position='midway', arrow='', style='-|'):
     return r"""
-\draw [connection]  ("""+of+""")    """+style+""" node {"""+arrow+"""} ("""+to+""");
+\draw ["""+connection+"""]  ("""+of+""")    """+style+""" node ["""+arrow_position+"""] {"""+arrow+"""} node [below = 1.5] {\caption{\\textbf{\\large """+caption+"""}}} ("""+to+""");
 """
 
 def to_connection( of, to):
@@ -237,14 +238,15 @@ def to_connection( of, to):
 \draw [connection]  ("""+of+"""-east)    -- node {\midarrow} ("""+to+"""-west);
 """
 
-def to_skip( of, to, pos=1.25):
+def to_skip( of, to, pos=1.25, caption=""):
     return r"""
-\path ("""+ of +"""-northeast) -- ("""+ of +"""-southeast) coordinate[pos="""+ str(pos) +"""] ("""+ of +"""-bottom) ;
-\path ("""+ to +"""-north) -- ("""+ to +"""-south)  coordinate[pos="""+ str(pos) +"""] ("""+ to +"""-bottom) ;
-\draw [copyconnection]  ("""+of+"""-southeast)  
--- node {\copymidarrow}("""+of+"""-bottom)
--- node {\copymidarrow}("""+to+"""-bottom)
--- node {\copymidarrow} ("""+to+"""-south);
+\path ("""+ of +"""-southeast) -- ("""+ of +"""-northeast) coordinate[pos="""+ str(pos) +"""] ("""+ of +"""-top) ;
+\path ("""+ to +"""-south) -- ("""+ to +"""-north)  coordinate[pos="""+ str(pos) +"""] ("""+ to +"""-top) ;
+\draw [copyconnection]  ("""+of+"""-northeast)  
+-- node {\copymidarrow}("""+of+"""-top)
+-- node {\copymidarrow }("""+to+"""-top)
+-- node {\copymidarrow} ("""+to+"""-north)
+node [left=1.0] { \caption{\\textbf{\\normalsize """+caption+"""}}};
 """
 
 def to_end():

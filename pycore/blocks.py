@@ -49,7 +49,7 @@ def block_XceptionDashed( name, botton, top, s_filer=256, n_filer=(64,64,64), of
     ]
 
 #define new block
-def block_XceptionPoolDashed( name, botton, top, s_filer=256, n_filer=(64,64,64), offset="(1,0,0)", height=32, depth=32, width=(3.5,3.5,3.5), pool_height=24, pool_depth=24, opacity=0.5, caption="" ):
+def block_XceptionPoolDashed( name, botton, top, s_filer=256, n_filer=(64,64,64), offset="(1,0,0)", height=32, depth=32, width=(3.5,3.5,3.5), pool_height=24, pool_depth=24, opacity=0.5, caption="", connection_caption="" ):
     return [
     to_XceptionElu( 
         name="ccr_{}".format( name ),
@@ -70,9 +70,13 @@ def block_XceptionPoolDashed( name, botton, top, s_filer=256, n_filer=(64,64,64)
         height=pool_height, 
         depth=pool_depth, 
         opacity=opacity, ),
-    to_connection_dashed( 
-        "{}".format( botton ), 
-        "ccr_{}".format( name )
+    to_connection_straight(
+        "{}-east".format( botton ), 
+        "ccr_{}-west".format( name ),
+        arrow="\midarrow",
+        style='--',
+        connection="dashed-connection",
+        caption=connection_caption
         )
     ]
 
@@ -118,7 +122,6 @@ def block_UnconvDeeplab( name, botton, top, s_filer=256, n_filer=(64,64,64), off
             name='ccr_res_{}'.format(name),
             offset="(0,0,0)",
             to="(unpool_{}-east)".format(name),
-            s_filer=str(s_filer),
             n_filer=str(n_filer[0]),
             width=width[0],
             height=height,
@@ -129,7 +132,6 @@ def block_UnconvDeeplab( name, botton, top, s_filer=256, n_filer=(64,64,64), off
             name='ccr_{}'.format(name),
             offset="(0,0,0)",
             to="(ccr_res_{}-east)".format(name),
-            s_filer=str(s_filer),
             n_filer=str(n_filer[1]),
             width=width[1],
             height=height,
